@@ -6,7 +6,7 @@ public class Item {
 	private ItemType type;
 	private boolean crop;
 	private boolean animal;
-	private int price;
+	private int purchasePrice;
 	private int bonus;
 	private int residual;
 
@@ -15,7 +15,7 @@ public class Item {
 		this.type = type;
 		this.crop = crop;
 		this.animal = animal;
-		this.price = price;
+		this.purchasePrice = price;
 		this.bonus = bonus;
 		this.residual = residual;
 	}
@@ -44,12 +44,12 @@ public class Item {
 		this.animal = animal;
 	}
 
-	public int getPrice() {
-		return price;
+	public int getPurchasePrice() {
+		return purchasePrice;
 	}
 
-	public void setPrice(int price) {
-		this.price = price;
+	public void setPurchasePrice(int price) {
+		this.purchasePrice = price;
 	}
 
 	public int getBonus() {

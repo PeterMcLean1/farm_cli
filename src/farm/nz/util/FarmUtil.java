@@ -10,36 +10,6 @@ import farm.nz.type.FarmType;
 public class FarmUtil {
 	static Scanner keyboard = new Scanner(System.in);
 
-	public static void setFarmDays(Farm farm) {
-		boolean looper = true;
-		int days = 0;
-
-		while (looper) {
-			try {
-				System.out.println("Please enter the number of days you want to play (5-10):");
-				// nextInt will throw InputMismatchException
-				// if the next token does not match the Integer
-				// regular expression, or is out of range
-				days = keyboard.nextInt();
-				if (days < 5 || days > 10) {
-					continue;
-				}
-			} catch (InputMismatchException exception) {
-				// scanner reset
-				keyboard = new Scanner(System.in);
-				continue;
-			}
-
-			System.out.println("Play for " + days + " days? (Y/N)");
-			String response = keyboard.next();
-			if (response.equalsIgnoreCase("y")) {
-				farm.setDays(days);
-				looper = false;
-			}
-		}
-
-	}
-
 	public static void setFarmName(Farm farm) {
 		boolean looper = true;
 		while (looper) {
@@ -54,6 +24,7 @@ public class FarmUtil {
 			String response = keyboard.next();
 			if (response.equalsIgnoreCase("y")) {
 				farm.setName(name);
+				GameUtil.clearScreen();
 				looper = false;
 			}
 		}
@@ -75,6 +46,7 @@ public class FarmUtil {
 			System.out.println("Your farm type is " + farm.getType().getDescription() + ", is this correct? (Y/N)");
 			String response2 = keyboard.next();
 			if (response2.equalsIgnoreCase("y")) {
+				GameUtil.clearScreen();
 				looper = false;
 			}
 		}
@@ -128,6 +100,7 @@ public class FarmUtil {
 			String response = keyboard.next();
 			if (response.equalsIgnoreCase("y")) {
 				farmer.setAge(age);
+				GameUtil.clearScreen();
 				looper = false;
 			}
 		}
@@ -149,6 +122,7 @@ public class FarmUtil {
 			String response = keyboard.next();
 			if (response.equalsIgnoreCase("y")) {
 				farmer.setName(name);
+				GameUtil.clearScreen();
 				looper = false;
 
 			}

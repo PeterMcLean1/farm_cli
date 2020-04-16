@@ -10,11 +10,49 @@ public class Farm {
 	private int account;
 	private int maintenance;
 	private FarmType type;
-	private int days;
+	private Farmer farmer;
 	private List<Paddock> paddocks = new ArrayList<Paddock>();
+	private List<Animal> animals = new ArrayList<Animal>();
+	private List<Item> items = new ArrayList<Item>();
 
 	public List<Paddock> getPaddocks() {
 		return paddocks;
+	}
+
+	public List<Animal> getAnimals() {
+		return animals;
+	}
+
+	public void setAnimals(List<Animal> animals) {
+		this.animals = animals;
+	}
+
+	public void addAnimal(Animal animal) {
+		this.animals.add(animal);
+	}
+
+	public List<Item> getItems() {
+		return items;
+	}
+
+	public void removeItem(Item item) {
+		if (items.contains(item)) {
+			items.remove(item);
+		}
+	}
+
+	public void addItem(Item item) {
+		this.items.add(item);
+	}
+
+	public void setItems(List<Item> items) {
+		this.items = items;
+	}
+
+	public void removeAnimal(Animal animal) {
+		if (animals.contains(animal)) {
+			animals.remove(animal);
+		}
 	}
 
 	public void setPaddocks(List<Paddock> paddocks) {
@@ -31,16 +69,16 @@ public class Farm {
 		}
 	}
 
-	public int getDays() {
-		return days;
-	}
-
-	public void setDays(int days) {
-		this.days = days;
-	}
-
 	public Farm() {
 
+	}
+
+	public Farmer getFarmer() {
+		return farmer;
+	}
+
+	public void setFarmer(Farmer farmer) {
+		this.farmer = farmer;
 	}
 
 	public String getName() {

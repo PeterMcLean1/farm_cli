@@ -3,11 +3,11 @@ package farm.nz.model;
 import farm.nz.type.AnimalType;
 
 public class Animal {
-	private int happy;
-	private int health;
+	private int happy; // affect daily income
+	private int health; // affect daily income
 	private int purchasePrice;
-	private int dailyIncome;
-	private int residual;
+	private int dailyIncome; // income produced daily from animal
+	private int residual; // value at end of game
 	private AnimalType type;
 
 	public Animal(AnimalType type, int happy, int health, int purchasePrice, int dailyIncome, int residual) {
