@@ -1,6 +1,5 @@
 package farm.nz.util;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import farm.nz.model.Farm;
@@ -8,6 +7,12 @@ import farm.nz.model.Farmer;
 import farm.nz.model.Game;
 import farm.nz.type.FarmType;
 
+/**
+ * Contains methods to print setup options to console
+ * 
+ * @author peter.mclean
+ *
+ */
 public class SetupUtil {
 	static Scanner keyboard = new Scanner(System.in);
 
@@ -18,21 +23,11 @@ public class SetupUtil {
 	 */
 	public static void setAge(Farmer farmer) {
 		boolean looper = true;
-		int age = 1;
 		while (looper) {
-
-			try {
-				System.out.println("Please enter your age (1-100):");
-				// nextInt will throw InputMismatchException
-				// if the next token does not match the Integer
-				// regular expression, or is out of range
-				age = keyboard.nextInt();
-				if (100 < age || 0 > age) {
-					continue;
-				}
-			} catch (InputMismatchException exception) {
-				// scanner reset
-				keyboard = new Scanner(System.in);
+			GameUtil.clearScreen();
+			System.out.println("Please enter your age (1-100):");
+			int age = GameUtil.getInputNumber();
+			if (100 < age || 1 > age) {
 				continue;
 			}
 
@@ -40,7 +35,6 @@ public class SetupUtil {
 			String response = keyboard.next();
 			if (response.equalsIgnoreCase("y")) {
 				farmer.setAge(age);
-				GameUtil.clearScreen();
 				looper = false;
 			}
 		}
@@ -49,10 +43,10 @@ public class SetupUtil {
 	public static void setFarmName(Farm farm) {
 		boolean looper = true;
 		while (looper) {
-			String name = "";
+			GameUtil.clearScreen();
 			System.out.println("Your farm name must be less than 25 characters");
 			System.out.println("Please enter a name for your farm:");
-			name = keyboard.next();
+			String name = keyboard.next();
 			if (25 < name.length()) {
 				continue;
 			}
@@ -60,7 +54,6 @@ public class SetupUtil {
 			String response = keyboard.next();
 			if (response.equalsIgnoreCase("y")) {
 				farm.setName(name);
-				GameUtil.clearScreen();
 				looper = false;
 			}
 		}
@@ -76,13 +69,16 @@ public class SetupUtil {
 		boolean looper = true;
 
 		while (looper) {
+			GameUtil.clearScreen();
 			System.out.println(sb.toString());
-			int response1 = keyboard.nextInt();
-			setType(farm, response1);
+			int selection = GameUtil.getInputNumber();
+			if (selection < 0) { // entry error
+				continue;
+			}
+			setType(farm, selection);
 			System.out.println("Your farm type is " + farm.getType().getDescription() + ", is this correct? (Y/N)");
-			String response2 = keyboard.next();
-			if (response2.equalsIgnoreCase("y")) {
-				GameUtil.clearScreen();
+			String response = keyboard.next();
+			if (response.equalsIgnoreCase("y")) {
 				looper = false;
 			}
 		}
@@ -99,18 +95,10 @@ public class SetupUtil {
 		int days = 0;
 
 		while (looper) {
-			try {
-				System.out.println("Please enter the number of days you want to play (5-10):");
-				// nextInt will throw InputMismatchException
-				// if the next token does not match the Integer
-				// regular expression, or is out of range
-				days = keyboard.nextInt();
-				if (days < 5 || days > 10) {
-					continue;
-				}
-			} catch (InputMismatchException exception) {
-				// scanner reset
-				keyboard = new Scanner(System.in);
+			GameUtil.clearScreen();
+			System.out.println("Please enter the number of days you want to play (5-10):");
+			days = GameUtil.getInputNumber();
+			if (days < 5 || days > 10) {
 				continue;
 			}
 
@@ -118,7 +106,6 @@ public class SetupUtil {
 			String response = keyboard.next();
 			if (response.equalsIgnoreCase("y")) {
 				game.setDaysToPlay(days);
-				GameUtil.clearScreen();
 				looper = false;
 			}
 		}
@@ -129,10 +116,10 @@ public class SetupUtil {
 		boolean looper = true;
 		System.out.println("Welcome farmer!");
 		while (looper) {
-			String name = "";
+			GameUtil.clearScreen();
 			System.out.println("Your name must be 3-15 characters, and contain no special characters");
 			System.out.println("Please enter a name for your farmer:");
-			name = keyboard.next();
+			String name = keyboard.next();
 			// regex validate name = no special characters 3-15 long
 			if (!name.matches("[A-Za-z0-9]{3,15}")) {
 				continue;
@@ -141,9 +128,7 @@ public class SetupUtil {
 			String response = keyboard.next();
 			if (response.equalsIgnoreCase("y")) {
 				farmer.setName(name);
-				GameUtil.clearScreen();
 				looper = false;
-
 			}
 		}
 	}
@@ -165,7 +150,6 @@ public class SetupUtil {
 			break;
 		default:
 			farm.setType(FarmType.FLAT);
-			break;
 		}
 
 	}

@@ -1,7 +1,6 @@
 package farm.nz.util;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -13,6 +12,12 @@ import farm.nz.model.Game;
 import farm.nz.model.Item;
 import farm.nz.model.Paddock;
 
+/**
+ * Contains methods to print general game play options to console
+ * 
+ * @author peter.mclean
+ *
+ */
 public class GameUtil {
 
 	static Scanner keyboard = new Scanner(System.in);
@@ -82,17 +87,7 @@ public class GameUtil {
 		while (looper) {
 			header(game);
 			System.out.println(sb.toString());
-			int selection;
-			try {
-				// nextInt will throw InputMismatchException
-				// if the next token does not match the Integer
-				// regular expression, or is out of range
-				selection = keyboard.nextInt();
-			} catch (InputMismatchException exception) {
-				// scanner reset
-				keyboard = new Scanner(System.in);
-				continue;
-			}
+			int selection = GameUtil.getInputNumber();
 
 			switch (selection) {
 			case 1:
@@ -111,9 +106,8 @@ public class GameUtil {
 				farmMaintenance(game);
 				looper = false;
 				break;
-
 			case 5:
-				StoreUtil.visitStore(game);
+				StoreUtil.mainStore(game);
 				looper = false;
 				break;
 			case 6:
@@ -128,6 +122,25 @@ public class GameUtil {
 	}
 
 	/**
+	 * Handles input that needs to be safely parsed from String to Integer
+	 * 
+	 * @return Returns the input parsed as an int or -1 on error
+	 */
+	public static int getInputNumber() {
+		if (keyboard.hasNext()) {
+			try {
+				return Integer.parseInt(keyboard.next());
+				// parseInt will throw NumberFormatException
+				// if the next token does not match the Integer
+				// regular expression, or is out of range
+			} catch (NumberFormatException nfe) {
+				return -1;
+			}
+		}
+		return -1;
+	}
+
+	/**
 	 * Used to set up programmed game options prior to the start of game play
 	 * 
 	 * @param game Used to track game progress
@@ -135,7 +148,7 @@ public class GameUtil {
 	public static void setupEnvironment(Game game) {
 		Farm farm = game.getFarm();
 		farm.setAccount(50);
-		farm.setName("Peter Valley");
+		farm.setName("Peter Valley Farm");
 		game.setDaysToPlay(5);
 		farm.addPaddock(new Paddock());
 		farm.addPaddock(new Paddock());
@@ -152,20 +165,11 @@ public class GameUtil {
 		header(game);
 		System.out.println("You have selected a " + animal.getType().getDescription());
 		System.out.println("What action do you wish to perform?\n");
-		System.out.println("1. * Play with animal");
-		System.out.println("2. * Use item on animal");
+		System.out.println("1. * Play with animal (+2 happiness)");
+		System.out.println("2. * Use item on animal (+item-bonus health)");
 		System.out.println("3. Return to Animal list");
 
-		int selection = 0;
-		try {
-			// nextInt will throw InputMismatchException
-			// if the next token does not match the Integer
-			// regular expression, or is out of range
-			selection = keyboard.nextInt();
-		} catch (InputMismatchException exception) {
-			// scanner reset
-			keyboard = new Scanner(System.in);
-		}
+		int selection = GameUtil.getInputNumber();
 
 		switch (selection) {
 		case 1:
@@ -175,7 +179,6 @@ public class GameUtil {
 			break;
 		case 2:
 			viewAnimalItems(animal, game);
-
 			break;
 		default:
 			viewAnimals(game);
@@ -183,22 +186,17 @@ public class GameUtil {
 
 	}
 
+	/**
+	 * 
+	 * @param game Used to track game instance progress
+	 */
 	public static void farmMaintenance(Game game) {
 		header(game);
-		System.out.println("1. * Fencing (add 1 paddock)");
-		System.out.println("2. * Repair barn (adds happiness to animals at random)");
+		System.out.println("1. * Fencing (+1 paddock to your farm)");
+		System.out.println("2. * Barn repair (+3 happiness to a random animal)");
 		System.out.println("3. Return to main menu");
-		int selection = 0;
-		try {
-			// nextInt will throw InputMismatchException
-			// if the next token does not match the Integer
-			// regular expression, or is out of range
-			selection = keyboard.nextInt();
-		} catch (InputMismatchException exception) {
-			// scanner reset
-			keyboard = new Scanner(System.in);
+		int selection = GameUtil.getInputNumber();
 
-		}
 		switch (selection) {
 		case 1:
 			Paddock paddock = new Paddock();
@@ -208,7 +206,6 @@ public class GameUtil {
 			break;
 		case 2:
 			List<Animal> animals = game.getFarm().getAnimals();
-
 			if (animals.size() > 0) {
 				Random rand = new Random();
 				Animal animal = animals.get(rand.nextInt(animals.size()));
@@ -216,15 +213,18 @@ public class GameUtil {
 				game.reduceActionCount();
 			}
 			mainScreen(game);
-
 			break;
-
 		default:
 			mainScreen(game);
 		}
 
 	}
 
+	/**
+	 * 
+	 * @param animal The animal to apply an item to
+	 * @param game   Used to track game instance progress
+	 */
 	public static void viewAnimalItems(Animal animal, Game game) {
 		header(game);
 		System.out.println("Select the item you wish to use:");
@@ -243,36 +243,25 @@ public class GameUtil {
 
 			lineNumber++;
 		}
-		int selection = 0;
-		try {
-			// nextInt will throw InputMismatchException
-			// if the next token does not match the Integer
-			// regular expression, or is out of range
-			selection = keyboard.nextInt();
-		} catch (InputMismatchException exception) {
-			// scanner reset
-			keyboard = new Scanner(System.in);
-
-		}
-
-		int lineNumber2 = 1;
+		int selection = GameUtil.getInputNumber();
+		lineNumber = 1;
 
 		for (Item item : animalItems) {
-
-			if (selection == lineNumber2) {
+			if (selection == lineNumber) {
 				animal.setHealth(animal.getHealth() + item.getBonus());
 				farm.getItems().remove(item);
 				game.reduceActionCount();
-
 			}
-
-			lineNumber2++;
-
+			lineNumber++;
 		}
 		viewAnimals(game);
 
 	}
 
+	/**
+	 * 
+	 * @param game Used to track game instance progress
+	 */
 	public static void viewAnimals(Game game) {
 		Farm farm = game.getFarm();
 		List<Animal> animals = farm.getAnimals();
@@ -287,35 +276,28 @@ public class GameUtil {
 			lineNumber++;
 		}
 		System.out.println(lineNumber + ". Return to main menu");
-		int selection = 0;
-		try {
-			// nextInt will throw InputMismatchException
-			// if the next token does not match the Integer
-			// regular expression, or is out of range
-			selection = keyboard.nextInt();
-		} catch (InputMismatchException exception) {
-			// scanner reset
-			keyboard = new Scanner(System.in);
+		int selection = GameUtil.getInputNumber();
 
-		}
-		int lineNumber2 = 1;
+		lineNumber = 1;
 
 		for (Animal animal : animals) {
-
-			if (selection == lineNumber2) {
+			if (selection == lineNumber) {
 				viewAnimal(animal, game);
 			}
-			lineNumber2++;
-
+			lineNumber++;
 		}
 		mainScreen(game);
 
 	}
 
+	/**
+	 * 
+	 * @param game Used to track game instance progress
+	 */
 	public static void viewCrops(Game game) {
 		Farm farm = game.getFarm();
-		int lineNumber = 1;
 		header(game);
+		int lineNumber = 1;
 
 		for (Paddock paddock : farm.getPaddocks()) {
 			if (paddock.hasCrop()) {
@@ -327,31 +309,22 @@ public class GameUtil {
 								+ ", Days grown: " + timeGrown + ", Days to harvest: " + timeMature + ")");
 			} else {
 				System.out.println(lineNumber + ". Paddock " + paddock.getPaddockID() + " (no crop!)");
+				// System.out.println("NOTE: Visit the General Store to buy and plant crops");
 			}
 			lineNumber++;
 		}
 		System.out.println(lineNumber + ". Return to main menu");
-		int selection = 0;
-		try {
-			// nextInt will throw InputMismatchException
-			// if the next token does not match the Integer
-			// regular expression, or is out of range
-			selection = keyboard.nextInt();
-		} catch (InputMismatchException exception) {
-			// scanner reset
-			keyboard = new Scanner(System.in);
+		int selection = GameUtil.getInputNumber();
 
-		}
 		lineNumber = 1;
 
 		for (Paddock paddock : farm.getPaddocks()) {
-
 			if (selection == lineNumber) {
 				viewPaddock(paddock, game);
 			}
 			lineNumber++;
-
 		}
+
 		mainScreen(game);
 
 	}
@@ -383,16 +356,7 @@ public class GameUtil {
 
 			System.out.println("4. Return to crop list");
 
-			int selection = 0;
-			try {
-				// nextInt will throw InputMismatchException
-				// if the next token does not match the Integer
-				// regular expression, or is out of range
-				selection = keyboard.nextInt();
-			} catch (InputMismatchException exception) {
-				// scanner reset
-				keyboard = new Scanner(System.in);
-			}
+			int selection = GameUtil.getInputNumber();
 
 			switch (selection) {
 			case 1:
@@ -410,7 +374,6 @@ public class GameUtil {
 				}
 				viewPaddock(paddock, game);
 				break;
-
 			default:
 				viewCrops(game);
 			}
@@ -418,6 +381,11 @@ public class GameUtil {
 
 	}
 
+	/**
+	 * 
+	 * @param paddock
+	 * @param game    Used to track game instance progress
+	 */
 	public static void viewCropItems(Paddock paddock, Game game) {
 		header(game);
 		System.out.println("Select the item you wish to use:");
@@ -433,53 +401,43 @@ public class GameUtil {
 
 		for (Item item : cropItems) {
 			System.out.println(lineNumber + ". " + item.getType().getDescription());
-
 			lineNumber++;
-
 		}
+
 		System.out.println(lineNumber + ". Return to crop list");
-		int selection = 0;
-		try {
-			// nextInt will throw InputMismatchException
-			// if the next token does not match the Integer
-			// regular expression, or is out of range
-			selection = keyboard.nextInt();
-		} catch (InputMismatchException exception) {
-			// scanner reset
-			keyboard = new Scanner(System.in);
+		int selection = GameUtil.getInputNumber();
 
-		}
-
-		int lineNumber2 = 1;
+		lineNumber = 1;
 
 		for (Item item : cropItems) {
-
-			if (selection == lineNumber2) {
+			if (selection == lineNumber) {
 				paddock.getCrop().setMaturity(paddock.getCrop().getMaturity() - item.getBonus());
 				farm.getItems().remove(item);
 				game.reduceActionCount();
-
 			}
-
-			lineNumber2++;
-
+			lineNumber++;
 		}
+
 		viewCrops(game);
 
 	}
 
+	/**
+	 * 
+	 * @param game Used to track game instance progress
+	 */
 	public static void viewItems(Game game) {
 		header(game);
 		Farm farm = game.getFarm();
 		int lineNumber = 1;
 
 		for (Item item : farm.getItems()) {
-
 			System.out.println(lineNumber + ". " + item.getType().getDescription());
 			lineNumber++;
 		}
+
 		System.out.println(lineNumber + ". Return to main menu");
-		String response = keyboard.next();
+		int response = GameUtil.getInputNumber();
 		mainScreen(game);
 
 	}

@@ -5,7 +5,7 @@ import farm.nz.type.CropType;
 public class Crop extends StoreItem {
 	private CropType type;
 	private int salePrice;
-	private int maturity;// days it takes from plant to harvest
+	private int maturity;// days from planting to harvest
 	private int dayPlanted;// day planted
 	private Paddock paddock;
 

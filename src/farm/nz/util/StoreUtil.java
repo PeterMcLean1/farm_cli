@@ -1,7 +1,6 @@
 package farm.nz.util;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,6 +12,12 @@ import farm.nz.model.Item;
 import farm.nz.model.Paddock;
 import farm.nz.model.Store;
 
+/**
+ * Contains methods to print general store options to console
+ * 
+ * @author peter.mclean
+ *
+ */
 public class StoreUtil {
 
 	static Scanner keyboard = new Scanner(System.in);
@@ -20,7 +25,7 @@ public class StoreUtil {
 	/**
 	 * Displays animals for purchase from the general store
 	 * 
-	 * @param game Used to track game progress
+	 * @param game Used to track game instance progress
 	 */
 	public static void buyAnimals(Game game) {
 		GameUtil.header(game);
@@ -29,46 +34,35 @@ public class StoreUtil {
 		Store store = new Store();
 		List<Animal> animals = store.getAnimalList();
 		int lineNumber = 1;
+
 		for (Animal animal : animals) {
 			System.out.println(
 					lineNumber + ". " + animal.getType().getDescription() + "($" + animal.getPurchasePrice() + ")");
 			lineNumber++;
 		}
-		System.out.println(lineNumber + ". General Store Menu");
-		int selection = 0;
-		try {
-			// nextInt will throw InputMismatchException
-			// if the next token does not match the Integer
-			// regular expression, or is out of range
-			selection = keyboard.nextInt();
-		} catch (InputMismatchException exception) {
-			// scanner reset
-			keyboard = new Scanner(System.in);
 
-		}
-		int lineNumber2 = 1;
+		System.out.println(lineNumber + ". General Store Menu");
+		int selection = GameUtil.getInputNumber();
+		lineNumber = 1;
 
 		for (Animal animal : animals) {
-
-			if (selection == lineNumber2) {
+			if (selection == lineNumber) {
 				if (animal.getPurchasePrice() <= farm.getAccount()) {
-
 					farm.setAccount(farm.getAccount() - animal.getPurchasePrice());
 					farm.addAnimal(animal);
 				}
-
 			}
-			lineNumber2++;
-
+			lineNumber++;
 		}
-		visitStore(game);
+
+		mainStore(game);
 
 	}
 
 	/**
 	 * Displays crops for purchase from the general store
 	 * 
-	 * @param game Used to track game progress
+	 * @param game Used to track game instance progress
 	 */
 	public static void buyCrops(Game game) {
 		GameUtil.header(game);
@@ -111,19 +105,10 @@ public class StoreUtil {
 
 		System.out.println(sb.toString());
 
-		int selection = 0;
-		try {
-			// nextInt will throw InputMismatchException
-			// if the next token does not match the Integer
-			// regular expression, or is out of range
-			selection = keyboard.nextInt();
-		} catch (InputMismatchException exception) {
-			// scanner reset
-			keyboard = new Scanner(System.in);
+		int selection = GameUtil.getInputNumber();
 
-		}
 		if (emptyPaddocks.size() == 0) {
-			visitStore(game);
+			mainStore(game);
 		}
 		lineNumber = 1;
 
@@ -142,13 +127,13 @@ public class StoreUtil {
 			lineNumber++;
 
 		}
-		visitStore(game);
+		mainStore(game);
 	}
 
 	/**
 	 * Displays items/supplies for purchase from the general store
 	 * 
-	 * @param game Used to track game progress
+	 * @param game Used to track game instance progress
 	 */
 	public static void buySupplies(Game game) {
 		GameUtil.header(game);
@@ -160,6 +145,7 @@ public class StoreUtil {
 		sb.append("Select the item you wish to purchase (1-");
 		sb.append(items.size());
 		sb.append(")\n\n");
+
 		for (Item item : items) {
 			sb.append(lineNumber);
 			sb.append(". ");
@@ -169,41 +155,35 @@ public class StoreUtil {
 			sb.append(")\n");
 			lineNumber++;
 		}
+
 		sb.append(lineNumber);
 		sb.append(". Return to the General Store menu");
 		System.out.println(sb.toString());
 
-		int selection = 0;
-		try {
-			// nextInt will throw InputMismatchException
-			// if the next token does not match the Integer
-			// regular expression, or is out of range
-			selection = keyboard.nextInt();
-		} catch (InputMismatchException exception) {
-			// scanner reset
-			keyboard = new Scanner(System.in);
+		int selection = GameUtil.getInputNumber();
 
-		}
-		int lineNumber2 = 1;
+		lineNumber = 1;
 
 		for (Item item : items) {
-
-			if (selection == lineNumber2) {
+			if (selection == lineNumber) {
 				if (item.getPurchasePrice() <= farm.getAccount()) {
-
 					farm.setAccount(farm.getAccount() - item.getPurchasePrice());
 					farm.addItem(item);
 				}
-
 			}
-			lineNumber2++;
-
+			lineNumber++;
 		}
-		visitStore(game);
+
+		mainStore(game);
 
 	}
 
-	public static void visitStore(Game game) {
+	/**
+	 * Displays the main screen of the general store
+	 * 
+	 * @param game Used to track game instance progress
+	 */
+	public static void mainStore(Game game) {
 		StringBuffer sb = new StringBuffer();
 		GameUtil.header(game);
 		sb.append("Welcome to the General Store!\n");
@@ -213,42 +193,21 @@ public class StoreUtil {
 		sb.append("3. Buy Supplies\n");
 		sb.append("4. Exit General Store\n");
 
-		boolean looper = true;
+		System.out.println(sb.toString());
+		int selection = GameUtil.getInputNumber();
 
-		while (looper) {
-			System.out.println(sb.toString());
-			int selection;
-			try {
-				// nextInt will throw InputMismatchException
-				// if the next token does not match the Integer
-				// regular expression, or is out of range
-				selection = keyboard.nextInt();
-			} catch (InputMismatchException exception) {
-				// scanner reset
-				keyboard = new Scanner(System.in);
-				continue;
-			}
-
-			switch (selection) {
-			case 1:
-				buyCrops(game);
-				looper = false;
-				break;
-			case 2:
-				buyAnimals(game);
-				looper = false;
-				break;
-			case 3:
-				buySupplies(game);
-				looper = false;
-				break;
-			case 4:
-				GameUtil.mainScreen(game);
-				looper = false;
-				break;
-			default:
-				continue;
-			}
+		switch (selection) {
+		case 1:
+			buyCrops(game);
+			break;
+		case 2:
+			buyAnimals(game);
+			break;
+		case 3:
+			buySupplies(game);
+			break;
+		default:
+			GameUtil.mainScreen(game);
 		}
 	}
 
