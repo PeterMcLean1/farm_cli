@@ -2,20 +2,25 @@ package farm.nz.model;
 
 import farm.nz.type.CropType;
 
-public class Crop {
+public class Crop extends StoreItem {
 	private CropType type;
-	private int purchasePrice;
 	private int salePrice;
-	private int maturity;
-	private int dayPlanted;
+	private int maturity;// days it takes from plant to harvest
+	private int dayPlanted;// day planted
 	private Paddock paddock;
 
-	public Crop(CropType type, int purchasePrice, int salePrice, int maturity) {
+	public Crop(CropType type, int purchasePrice, int salePrice, int maturity, int residual) {
 		super();
 		this.type = type;
-		this.purchasePrice = purchasePrice;
+		this.setPurchasePrice(purchasePrice);
 		this.salePrice = salePrice;
 		this.maturity = maturity;
+		this.setResidualValue(residual);
+	}
+
+	public boolean isMature(Game game) {
+		return ((dayPlanted + maturity) <= game.getCurrentDay());
+
 	}
 
 	public CropType getType() {
@@ -24,14 +29,6 @@ public class Crop {
 
 	public void setType(CropType type) {
 		this.type = type;
-	}
-
-	public int getPurchasePrice() {
-		return purchasePrice;
-	}
-
-	public void setPurchasePrice(int purchasePrice) {
-		this.purchasePrice = purchasePrice;
 	}
 
 	public int getSalePrice() {

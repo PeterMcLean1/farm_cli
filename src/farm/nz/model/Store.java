@@ -13,17 +13,17 @@ public class Store {
 	private List<Animal> animalList = new ArrayList<Animal>();
 
 	public Store() {
-		// (CropType type, int purchasePrice, int salePrice, int maturity)
-		cropList.add(new Crop(CropType.CORN, 5, 20, 2));
-		cropList.add(new Crop(CropType.TOMATO, 4, 13, 3));
-		cropList.add(new Crop(CropType.BEET, 6, 12, 1));
-		cropList.add(new Crop(CropType.PUMPKIN, 3, 30, 4));
-		cropList.add(new Crop(CropType.WHEAT, 1, 4, 1));
-		cropList.add(new Crop(CropType.PEA, 2, 6, 2));
+		// (CropType type, int purchasePrice, int salePrice, int maturity, int residual)
+		cropList.add(new Crop(CropType.CORN, 5, 20, 4, 6));
+		cropList.add(new Crop(CropType.TOMATO, 4, 13, 5, 5));
+		cropList.add(new Crop(CropType.BARLEY, 6, 12, 3, 7));
+		cropList.add(new Crop(CropType.PUMPKIN, 3, 30, 6, 4));
+		cropList.add(new Crop(CropType.WHEAT, 1, 4, 3, 2));
+		cropList.add(new Crop(CropType.PEA, 2, 6, 3, 3));
 		// (ItemType type, boolean crop, boolean animal, int price, int bonus, int
 		// residual)
-		itemList.add(new Item(ItemType.FERTILIZER, true, false, 5, 2, 5));
-		itemList.add(new Item(ItemType.SPRAY, true, false, 3, 1, 3));
+		itemList.add(new Item(ItemType.FERTILIZER, true, false, 5, 3, 5));
+		itemList.add(new Item(ItemType.SPRAY, true, false, 3, 2, 3));
 		itemList.add(new Item(ItemType.TRAINING, false, false, 10, 5, 0));
 		itemList.add(new Item(ItemType.FOOD, false, true, 1, 1, 1));
 		itemList.add(new Item(ItemType.VITAMINS, false, true, 2, 3, 1));

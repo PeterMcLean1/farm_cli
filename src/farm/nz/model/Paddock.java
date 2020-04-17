@@ -8,9 +8,7 @@ public class Paddock {
 	private Crop crop;
 
 	public Paddock() {
-
 		this.paddockID = count.incrementAndGet(); // give the paddock a unique incremental ID
-
 	}
 
 	public Crop getCrop() {

@@ -1,7 +1,7 @@
 package farm.nz.type;
 
 public enum CropType {
-	CORN("Corn"), TOMATO("Tomato"), BEET("Fodder Beet"), PUMPKIN("Pumpkin"), WHEAT("Wheat"), PEA("Peas");
+	CORN("Corn"), TOMATO("Tomato"), BARLEY("Barley"), PUMPKIN("Pumpkin"), WHEAT("Wheat"), PEA("Peas");
 
 	private final String description;
 

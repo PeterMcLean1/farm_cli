@@ -1,6 +1,6 @@
 package farm.nz.model;
 
-public class GamePlay {
+public class Game {
 
 	private int daysToPlay;
 	private int currentDay = 1;
@@ -11,7 +11,7 @@ public class GamePlay {
 		this.actionCount = 2;
 	}
 
-	public GamePlay(Farm farm) {
+	public Game(Farm farm) {
 		this.farm = farm;
 	}
 
@@ -20,7 +20,7 @@ public class GamePlay {
 	}
 
 	public void incrementCurrentDay() {
-		this.currentDay = currentDay++;
+		this.currentDay++;
 	}
 
 	public int getDaysToPlay() {
