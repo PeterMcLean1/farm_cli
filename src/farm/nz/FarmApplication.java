@@ -9,8 +9,7 @@ public class FarmApplication {
 
 	public static void main(String[] args) {
 		Farmer farmer = new Farmer();
-		Farm farm = new Farm();
-		farm.setFarmer(farmer);
+		Farm farm = new Farm(farmer);
 		Game game = new Game(farm);
 
 		// set game length [2.1]

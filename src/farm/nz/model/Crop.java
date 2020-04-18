@@ -9,13 +9,11 @@ public class Crop extends StoreItem {
 	private int dayPlanted;// day planted
 	private Paddock paddock;
 
-	public Crop(CropType type, int purchasePrice, int salePrice, int maturity, int residual) {
-		super();
+	public Crop(CropType type, int price, int salePrice, int maturity, int residual) {
+		super(price, residual);
 		this.type = type;
-		this.setPurchasePrice(purchasePrice);
 		this.salePrice = salePrice;
 		this.maturity = maturity;
-		this.setResidualValue(residual);
 	}
 
 	public boolean isMature(Game game) {

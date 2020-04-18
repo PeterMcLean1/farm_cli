@@ -62,21 +62,35 @@ public class SetupUtil {
 	public static void setFarmType(Farm farm) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("Please select your farm type (1-4):\n\n");
-		sb.append("1. " + FarmType.FLAT.getDescription() + "\n");
-		sb.append("2. " + FarmType.HILL.getDescription() + "\n");
-		sb.append("3. " + FarmType.RIVER.getDescription() + "\n");
-		sb.append("4. " + FarmType.FOREST.getDescription());
+		sb.append("1. " + FarmType.FLAT.getDisplay() + "\n");
+		sb.append("2. " + FarmType.HILL.getDisplay() + "\n");
+		sb.append("3. " + FarmType.RIVER.getDisplay() + "\n");
+		sb.append("4. " + FarmType.FOREST.getDisplay());
 		boolean looper = true;
 
 		while (looper) {
 			GameUtil.clearScreen();
 			System.out.println(sb.toString());
 			int selection = GameUtil.getInputNumber();
-			if (selection < 0) { // entry error
-				continue;
+
+			switch (selection) {
+			case 1:
+				farm.setType(FarmType.FLAT);
+				break;
+			case 2:
+				farm.setType(FarmType.HILL);
+				break;
+			case 3:
+				farm.setType(FarmType.RIVER);
+				break;
+			case 4:
+				farm.setType(FarmType.FOREST);
+				break;
+			default:
+				farm.setType(FarmType.FLAT);
 			}
-			setType(farm, selection);
-			System.out.println("Your farm type is " + farm.getType().getDescription() + ", is this correct? (Y/N)");
+
+			System.out.println("Your farm type is " + farm.getType().getDisplay() + ", is this correct? (Y/N)");
 			String response = keyboard.next();
 			if (response.equalsIgnoreCase("y")) {
 				looper = false;
@@ -88,7 +102,7 @@ public class SetupUtil {
 	/**
 	 * Allows user to set the number of game days they wish to play
 	 * 
-	 * @param game Used to track game progress
+	 * @param game Used to track game instance progress
 	 */
 	public static void setGameDays(Game game) {
 		boolean looper = true;
@@ -131,27 +145,6 @@ public class SetupUtil {
 				looper = false;
 			}
 		}
-	}
-
-	private static void setType(Farm farm, int selection) {
-
-		switch (selection) {
-		case 1:
-			farm.setType(FarmType.FLAT);
-			break;
-		case 2:
-			farm.setType(FarmType.HILL);
-			break;
-		case 3:
-			farm.setType(FarmType.RIVER);
-			break;
-		case 4:
-			farm.setType(FarmType.FOREST);
-			break;
-		default:
-			farm.setType(FarmType.FLAT);
-		}
-
 	}
 
 }

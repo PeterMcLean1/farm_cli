@@ -20,6 +20,7 @@ public class Store {
 		cropList.add(new Crop(CropType.PUMPKIN, 3, 30, 6, 4));
 		cropList.add(new Crop(CropType.WHEAT, 1, 4, 3, 2));
 		cropList.add(new Crop(CropType.PEA, 2, 6, 3, 3));
+		cropList.add(new Crop(CropType.PINE, 2, 12, 4, 6));
 		// (ItemType type, boolean crop, boolean animal, int price, int bonus, int
 		// residual)
 		itemList.add(new Item(ItemType.FERTILIZER, true, false, 5, 3, 5));

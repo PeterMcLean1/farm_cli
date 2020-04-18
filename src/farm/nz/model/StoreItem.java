@@ -9,6 +9,12 @@ public class StoreItem {
 
 	}
 
+	public StoreItem(int purchasePrice, int residualValue) {
+		this.purchasePrice = purchasePrice;
+		this.residualValue = residualValue;
+
+	}
+
 	public int getPurchasePrice() {
 		return purchasePrice;
 	}

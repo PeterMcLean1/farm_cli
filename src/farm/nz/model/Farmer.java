@@ -3,18 +3,15 @@ package farm.nz.model;
 public class Farmer {
 	private String name;
 	private int age;
-	private int skill;
+	private int skill = 0;
 
+	// TODO implement skill logic training and advantage
 	public Farmer() {
-		this.name = "";
-		this.age = 0;
-		this.skill = 0;
 	}
 
 	public Farmer(String name, int age) {
 		this.name = name;
 		this.age = age;
-		this.skill = 0;
 	}
 
 	public int getAge() {

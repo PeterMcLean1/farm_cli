@@ -8,13 +8,11 @@ public class Animal extends StoreItem {
 	private int dailyIncome; // income produced daily from animal
 	private AnimalType type;
 
-	public Animal(AnimalType type, int happy, int health, int purchasePrice, int dailyIncome, int residual) {
-		super();
+	public Animal(AnimalType type, int happy, int health, int price, int dailyIncome, int residual) {
+		super(price, residual);
 		this.happy = happy;
 		this.health = health;
-		this.setPurchasePrice(purchasePrice);
 		this.dailyIncome = dailyIncome;
-		this.setResidualValue(residual);
 		this.type = type;
 	}
 

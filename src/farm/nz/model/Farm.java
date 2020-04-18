@@ -73,6 +73,11 @@ public class Farm {
 
 	}
 
+	public Farm(Farmer farmer) {
+		this.farmer = farmer;
+
+	}
+
 	public Farmer getFarmer() {
 		return farmer;
 	}

@@ -1,15 +1,16 @@
 package farm.nz.type;
 
 public enum CropType {
-	CORN("Corn"), TOMATO("Tomato"), BARLEY("Barley"), PUMPKIN("Pumpkin"), WHEAT("Wheat"), PEA("Peas");
+	CORN("Corn"), TOMATO("Tomato"), BARLEY("Barley"), PUMPKIN("Pumpkin"), WHEAT("Wheat"), PEA("Peas"),
+	PINE("Pine Trees");
 
-	private final String description;
+	private final String display;
 
-	CropType(String description) {
-		this.description = description;
+	CropType(String display) {
+		this.display = display;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getDisplay() {
+		return display;
 	}
 }

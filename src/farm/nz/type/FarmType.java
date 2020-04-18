@@ -1,35 +1,48 @@
 package farm.nz.type;
 
 public enum FarmType {
-	FLAT(1, 1, 5, "Flat land"), HILL(2, 2, 8, "Hill country"), RIVER(3, 3, 6, "River"), FOREST(4, 4, 10, "Forest");
+	FLAT(5, 1, 1, 5, "Flat land"), HILL(10, 1, 1, 8, "Hill country"), RIVER(15, 1, 1, 6, "River"),
+	FOREST(20, 1, 1, 10, "Forest");
 
-	private final double eventChance;
-	private final int upkeep;
+	private final int eventChance;
+	private final double animalBonusRate;
+	private final double cropGrowthRate;
+	/**
+	 * The maximum number of paddocks allowed for this type of farm
+	 */
 	private final int maxPaddocks;
-	private final String description;
+	/**
+	 * Display name of this farm type
+	 */
+	private final String display;
 
-	FarmType(double eventChance, int upkeep, int maxPaddocks, String description) {
+	FarmType(int eventChance, double animalBonusRate, double cropGrowthRate, int maxPaddocks, String display) {
 		this.eventChance = eventChance;
-		this.upkeep = upkeep;
+		this.animalBonusRate = animalBonusRate;
+		this.cropGrowthRate = cropGrowthRate;
 		this.maxPaddocks = maxPaddocks;
-		this.description = description;
+		this.display = display;
 
 	}
 
-	public double getEventChance() {
+	public int getEventChance() {
 		return eventChance;
 	}
 
-	public int getUpkeep() {
-		return upkeep;
+	public double getAnimalBonusRate() {
+		return animalBonusRate;
+	}
+
+	public double getCropGrowthRate() {
+		return cropGrowthRate;
 	}
 
 	public int getMaxPaddocks() {
 		return maxPaddocks;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getDisplay() {
+		return display;
 	}
 
 }
