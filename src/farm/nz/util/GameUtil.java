@@ -53,8 +53,14 @@ public class GameUtil {
 	 */
 	private static void dayStart(Game game) {
 		game.incrementCurrentDay();
-		game.setActionCount();
+		game.setActionCount(0);
 		Farm farm = game.getFarm();
+
+		// reduce animal health by 1
+		List<Animal> animals = farm.getAnimals();
+		for (Animal a : animals) {
+			a.setHealth(a.getHealth() - 1);
+		}
 
 		int chance = farm.getType().getEventChance();
 
@@ -105,7 +111,6 @@ public class GameUtil {
 				// get farm animals
 				// remove one or more of all farm animals
 				// remaining animals lose 'substantial' happiness
-				List<Animal> animals = farm.getAnimals();
 
 				int animalLength = animals.size();
 				int animalsLost = 0;
@@ -196,18 +201,20 @@ public class GameUtil {
 		switch (selection) {
 		case 1:
 			// TODO implement maxPaddocks from farmType
+			// TODO implement daily action limit
 			Paddock paddock = new Paddock();
 			game.getFarm().addPaddock(paddock);
-			game.reduceActionCount();
+			game.incrementActionCount();
 			mainScreen(game);
 			break;
 		case 2:
+			// TODO implement daily action limit
 			List<Animal> animals = game.getFarm().getAnimals();
 			if (animals.size() > 0) {
 				Random rand = new Random();
 				Animal animal = animals.get(rand.nextInt(animals.size()));
 				animal.setHappy(animal.getHappy() + 3);
-				game.reduceActionCount();
+				game.incrementActionCount();
 			}
 			mainScreen(game);
 			break;
@@ -263,8 +270,10 @@ public class GameUtil {
 		sb2.append(game.getCurrentDay());
 		sb2.append(" of ");
 		sb2.append(game.getDaysToPlay());
-		sb2.append("         Actions remaining: ");
+		sb2.append("         Actions used: ");
 		sb2.append(game.getActionCount());
+		sb2.append(" of ");
+		sb2.append(game.getMaxDailyActions());
 		sb2.append(" |\n");
 		sb2.append("---------------------------------------------");
 		System.out.println(sb2.toString());
@@ -281,8 +290,8 @@ public class GameUtil {
 		sb.append("1. View Crops\n");
 		sb.append("2. View Animals\n");
 		sb.append("3. View Supplies\n");
-		sb.append("4. Improve Farm\n");
-		sb.append("5. Visit Store\n");
+		sb.append("4. Improve your Farm\n");
+		sb.append("5. Visit the General Store\n");
 		sb.append("6. Move to next day\n");
 
 		boolean looper = true;
@@ -334,6 +343,7 @@ public class GameUtil {
 		farm.setType(FarmType.FLAT);
 		farm.setName("Peter Valley Farm");
 		game.setDaysToPlay(5);
+		game.setMaxDailyActions(2);
 		farm.addPaddock(new Paddock());
 		farm.addPaddock(new Paddock());
 	}
@@ -357,8 +367,9 @@ public class GameUtil {
 
 		switch (selection) {
 		case 1:
+			// TODO implement daily action limit
 			animal.setHappy(animal.getHappy() + 2);
-			game.reduceActionCount();
+			game.incrementActionCount();
 			viewAnimals(game);
 			break;
 		case 2:
@@ -376,16 +387,24 @@ public class GameUtil {
 	 * @param game   Used to track game instance progress
 	 */
 	public static void viewAnimalItems(Animal animal, Game game) {
+		// TODO implement daily action limit
 		header(game);
-		System.out.println("Select the item you wish to use:");
 		Farm farm = game.getFarm();
 		List<Item> items = farm.getItems();
 		List<Item> animalItems = new ArrayList<Item>();
+
 		for (Item item : items) {
 			if (item.isAnimal()) {
 				animalItems.add(item);
 			}
 		}
+		if (animalItems.size() > 0) {
+			System.out.println("Select the item you wish to use:");
+		} else {
+			System.out.println("You have no farm supplies able to be used on animals.");
+			System.out.println("Hint: Crops can be purchased from the General Store.");
+		}
+
 		int lineNumber = 1;
 
 		for (Item item : animalItems) {
@@ -393,6 +412,7 @@ public class GameUtil {
 
 			lineNumber++;
 		}
+		System.out.println(lineNumber + ". Return to animal list");
 		int selection = GameUtil.getInputNumber();
 		lineNumber = 1;
 
@@ -400,7 +420,7 @@ public class GameUtil {
 			if (selection == lineNumber) {
 				animal.setHealth(animal.getHealth() + item.getBonus());
 				farm.getItems().remove(item);
-				game.reduceActionCount();
+				game.incrementActionCount();
 			}
 			lineNumber++;
 		}
@@ -417,7 +437,11 @@ public class GameUtil {
 		List<Animal> animals = farm.getAnimals();
 		header(game);
 		int lineNumber = 1;
-		System.out.println("Select an animal you wish to tend:");
+		if (animals.size() == 0) {
+			System.out.println("You have no farm animals. \nHint: Animals can be purchased from the General Store.");
+		} else {
+			System.out.println("Select a farm animal you wish to tend:");
+		}
 
 		for (Animal animal : animals) {
 
@@ -446,8 +470,8 @@ public class GameUtil {
 	 * @param game    Used to track game instance progress
 	 */
 	public static void viewCropItems(Paddock paddock, Game game) {
+		// TODO implement daily action limit
 		header(game);
-		System.out.println("Select the item you wish to use:");
 		Farm farm = game.getFarm();
 		List<Item> items = farm.getItems();
 		List<Item> cropItems = new ArrayList<Item>();
@@ -456,6 +480,13 @@ public class GameUtil {
 				cropItems.add(item);
 			}
 		}
+		if (cropItems.size() > 0) {
+			System.out.println("Select the item you wish to use:");
+		} else {
+			System.out.println("You have no farm supplies able to be used on crops.");
+			System.out.println("Hint: Crops can be purchased from the General Store.");
+		}
+
 		int lineNumber = 1;
 
 		for (Item item : cropItems) {
@@ -472,7 +503,7 @@ public class GameUtil {
 			if (selection == lineNumber) {
 				paddock.getCrop().setMaturity(paddock.getCrop().getMaturity() - item.getBonus());
 				farm.getItems().remove(item);
-				game.reduceActionCount();
+				game.incrementActionCount();
 			}
 			lineNumber++;
 		}
@@ -487,10 +518,23 @@ public class GameUtil {
 	 */
 	public static void viewCrops(Game game) {
 		Farm farm = game.getFarm();
+		List<Paddock> paddocks = farm.getPaddocks();
 		header(game);
+		boolean hasCrops = false;
+		for (Paddock p : paddocks) {
+			if (p.hasCrop()) {
+				hasCrops = true;
+			}
+		}
+		if (hasCrops) {
+			System.out.println("Select the paddock/crop you wish to tend:");
+		} else {
+			System.out.println(
+					"You have no crops in your paddocks.\nHint: Crops can be purchased from the General Store.");
+		}
 		int lineNumber = 1;
 
-		for (Paddock paddock : farm.getPaddocks()) {
+		for (Paddock paddock : paddocks) {
 			if (paddock.hasCrop()) {
 				Crop crop = paddock.getCrop();
 				int timeGrown = game.getCurrentDay() - crop.getDayPlanted();
@@ -499,7 +543,7 @@ public class GameUtil {
 						.println(lineNumber + ". Paddock " + paddock.getPaddockID() + " (" + crop.getType().getDisplay()
 								+ ", Days grown: " + timeGrown + ", Days to harvest: " + timeMature + ")");
 			} else {
-				System.out.println(lineNumber + ". Paddock " + paddock.getPaddockID() + " (no crop!)");
+				System.out.println(lineNumber + ". Paddock " + paddock.getPaddockID() + " (no crop so cannot select!)");
 				// System.out.println("NOTE: Visit the General Store to buy and plant crops");
 			}
 			lineNumber++;
@@ -526,10 +570,16 @@ public class GameUtil {
 	 */
 	public static void viewItems(Game game) {
 		header(game);
+		List<Item> items = game.getFarm().getItems();
+		if (items.size() == 0) {
+			System.out.println("You have no farm supplies. \nHint: Supplies can be purchased from the General Store.");
+		} else {
+			System.out.println("This is a list of your farm supplies:");
+		}
 		Farm farm = game.getFarm();
 		int lineNumber = 1;
 
-		for (Item item : farm.getItems()) {
+		for (Item item : items) {
 			System.out.println(lineNumber + ". " + item.getType().getDisplay());
 			lineNumber++;
 		}
@@ -557,12 +607,12 @@ public class GameUtil {
 			System.out.println("You have selected paddock " + paddock.getPaddockID() + " containing "
 					+ crop.getType().getDisplay());
 			System.out.println("What action do you wish to perform?\n");
-			System.out.println("1. * Water crop");
-			System.out.println("2. * Use item on crop");
+			System.out.println("1. *Water crop");
+			System.out.println("2. *Use item on crop");
 			if (crop.isMature(game)) {
-				System.out.println("3. * Harvest crop (crop is ready)");
+				System.out.println("3. *Harvest crop (crop is ready to harvest)");
 			} else {
-				System.out.println("3. Harvest crop (crop is NOT ready)");
+				System.out.println("3. *Harvest crop (crop is NOT ready to harvest)");
 			}
 
 			System.out.println("4. Return to crop list");
@@ -571,8 +621,9 @@ public class GameUtil {
 
 			switch (selection) {
 			case 1:
+				// TODO implement daily action limit
 				crop.setMaturity(crop.getMaturity() - 1);
-				game.reduceActionCount();
+				game.incrementActionCount();
 				viewCrops(game);
 				break;
 			case 2:
