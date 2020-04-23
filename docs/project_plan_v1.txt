@@ -81,6 +81,47 @@ Show a list of farm items and show whether they are applicable to CROP or ANIMAL
 
 Display FARM_MAINTENANCE
 Show a list of farm maintenance actions:
-- Clear Land, which will increase paddock count up to maximum paddocks // Rq 2.3.5.5(b)
-- Repair barn, which will increase animal health // Rq 2.3.5.5(b)
+- Clear Land, which will increase paddock count up to maximum paddocks, increment daily actions// Rq 2.3.5.5(b)
+- Repair barn, which will increase animal health, increment daily actions// Rq 2.3.5.5(b)
++optional return to MAIN_SCREEN
 
+Display GENERAL_STORE
+Show a list of general store actions:
+-buy and plant crops, -> BUY_CROP
+-buy animals, -> BUY_ANIMAL
+-buy supplies, -> BUY_ITEM
++optional return to MAIN_SCREEN
+
+Display BUY_CROP
+Show how many empty paddocks the farm has
+Show a list of crops available to purchase
+-selecting a crop takes money off the farm account and plants it in the first empty paddock
++optional return to GENERAL_STORE
+
+Display BUY_ANIMAL
+Show a list of animals available to purchase
+-selecting a animal takes money off the farm account and places the animal on the farm (Barn)
++optional return to GENERAL_STORE
+
+Display BUY_ITEM
+Show a list of items available to purchase and their bonuses
+-selecting a item takes money off the farm account and places the item in the farm inventory for later use
++optional return to GENERAL_STORE
+
+NEXT_DAY
+increments the current day by 1 and refreshes action count back to 0
+decay animal health and happiness (if no training)
+adds animal bonuses to farm account
+chance for random event to occur -> DROUGHT/BROKEN_FENCE/COUNTY_FAIR
+
+DROUGHT
+get farm crops and delete half (rounded down)
+
+BROKEN_FENCE
+remove one or more of all farm animals
+remaining animals lose 'substantial' happiness
+
+COUNTY_FAIR
+win county fair
+add 'reasonable' sum of money to farm account
+money earned scaled number of farm crops and animals

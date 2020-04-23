@@ -20,17 +20,28 @@ public class Item extends StoreItem {
 	 * Indicates whether the item can be applied to an animal.
 	 */
 	private boolean animal;
+	private boolean skill;
+
 	/**
 	 * The bonus to add when this item is used on crop or animal.
 	 */
 	private int bonus;
 
-	public Item(ItemType type, boolean crop, boolean animal, int price, int bonus, int residual) {
+	public Item(ItemType type, boolean crop, boolean animal, boolean skill, int price, int bonus, int residual) {
 		super(price, residual);
 		this.type = type;
 		this.crop = crop;
 		this.animal = animal;
+		this.skill = skill;
 		this.bonus = bonus;
+	}
+
+	public boolean isSkill() {
+		return skill;
+	}
+
+	public void setSkill(boolean skill) {
+		this.skill = skill;
 	}
 
 	/**

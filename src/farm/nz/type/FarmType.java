@@ -5,7 +5,7 @@ public enum FarmType {
 	FOREST(20, 1, 1, 10, "Forest");
 
 	private final int eventChance;
-	private final double animalBonusRate;
+	private final int animalBonus;
 	private final double cropGrowthRate;
 	/**
 	 * The maximum number of paddocks allowed for this type of farm
@@ -16,9 +16,9 @@ public enum FarmType {
 	 */
 	private final String display;
 
-	FarmType(int eventChance, double animalBonusRate, double cropGrowthRate, int maxPaddocks, String display) {
+	FarmType(int eventChance, int animalBonus, double cropGrowthRate, int maxPaddocks, String display) {
 		this.eventChance = eventChance;
-		this.animalBonusRate = animalBonusRate;
+		this.animalBonus = animalBonus;
 		this.cropGrowthRate = cropGrowthRate;
 		this.maxPaddocks = maxPaddocks;
 		this.display = display;
@@ -29,8 +29,8 @@ public enum FarmType {
 		return eventChance;
 	}
 
-	public double getAnimalBonusRate() {
-		return animalBonusRate;
+	public int getAnimalBonus() {
+		return animalBonus;
 	}
 
 	public double getCropGrowthRate() {

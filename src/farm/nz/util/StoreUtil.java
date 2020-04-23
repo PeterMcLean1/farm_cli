@@ -28,7 +28,6 @@ public class StoreUtil {
 	 * @param game Used to track game instance progress
 	 */
 	public static void buyAnimals(Game game) {
-		// TODO apply farmtype animal bonus rate to animal when purchased
 		GameUtil.header(game);
 		Farm farm = game.getFarm();
 		System.out.println("Please select the Animal to purchase?");
@@ -37,8 +36,8 @@ public class StoreUtil {
 		int lineNumber = 1;
 
 		for (Animal animal : animals) {
-			System.out.println(
-					lineNumber + ". " + animal.getType().getDisplay() + "($" + animal.getPurchasePrice() + ")");
+			System.out.println(lineNumber + ". " + animal.getType().getDisplay() + "(Buy: $" + animal.getPurchasePrice()
+					+ ", Base income: $" + animal.getBaseIncome() + ")");
 			lineNumber++;
 		}
 
@@ -49,8 +48,10 @@ public class StoreUtil {
 		for (Animal animal : animals) {
 			if (selection == lineNumber) {
 				if (animal.getPurchasePrice() <= farm.getAccount()) {
+					animal.setHappy(animal.getHappy() + farm.getType().getAnimalBonus());
 					farm.setAccount(farm.getAccount() - animal.getPurchasePrice());
 					farm.addAnimal(animal);
+
 				}
 			}
 			lineNumber++;
@@ -60,6 +61,10 @@ public class StoreUtil {
 
 	}
 
+	public static int calculateGrowth(int maturity, double rate) {
+		return (int) Math.round(maturity * rate);
+	}
+
 	/**
 	 * Displays crops for purchase from the general store
 	 * 
@@ -67,8 +72,8 @@ public class StoreUtil {
 	 */
 	public static void buyCrops(Game game) {
 		GameUtil.header(game);
-		// TODO apply growth rate of farmtype to maturity day
 		Farm farm = game.getFarm();
+		double growthRate = farm.getType().getCropGrowthRate();
 		List<Paddock> paddocks = farm.getPaddocks();
 		List<Paddock> emptyPaddocks = new ArrayList<Paddock>();
 		Store store = new Store();
@@ -96,8 +101,12 @@ public class StoreUtil {
 			sb.append(lineNumber);
 			sb.append(". ");
 			sb.append(crop.getType().getDisplay());
-			sb.append("($");
+			sb.append(" (Buy: $");
 			sb.append(crop.getPurchasePrice());
+			sb.append(", Sell: $");
+			sb.append(crop.getSalePrice());
+			sb.append(", Days to grow: ");
+			sb.append(calculateGrowth(crop.getMaturity(), growthRate));
 			sb.append(")\n");
 			lineNumber++;
 		}

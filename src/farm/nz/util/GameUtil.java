@@ -40,10 +40,23 @@ public class GameUtil {
 	 * @param game Used to track game instance progress
 	 */
 	private static void dayEnd(Game game) {
-		// Add animal bonuses to farm account
-		// decay animal health and happiness (if no training)
-		// if next day exists
-		dayStart(game);
+		Farm farm = game.getFarm();
+		int bonus = 0;
+
+		List<Animal> animals = farm.getAnimals();
+		for (Animal animal : animals) {
+			bonus = bonus + animal.getDailyIncome();
+
+		}
+
+		farm.setAccount(farm.getAccount() + bonus);
+
+		if (game.getCurrentDay() == game.getDaysToPlay()) {
+			endGame(game);
+		} else {
+			dayStart(game);
+		}
+
 	}
 
 	/**
@@ -55,11 +68,23 @@ public class GameUtil {
 		game.incrementCurrentDay();
 		game.setActionCount(0);
 		Farm farm = game.getFarm();
+		boolean skill = false;
+		for (Item item : farm.getItems()) {
+			if (item.isSkill()) {
+				skill = true;
 
-		// reduce animal health by 1
+			}
+		}
+
+		// reduce animal health and happy by 1
 		List<Animal> animals = farm.getAnimals();
 		for (Animal a : animals) {
-			a.setHealth(a.getHealth() - 1);
+			if (!skill && a.getHappy() > 0) {
+				a.setHappy(a.getHappy() - 1);
+			}
+			if (!skill && a.getHealth() > 0) {
+				a.setHealth(a.getHealth() - 1);
+			}
 		}
 
 		int chance = farm.getType().getEventChance();
@@ -169,10 +194,10 @@ public class GameUtil {
 				sb.append(") have been added to your farm account.");
 				eventScreen(sb, game);
 				break;
-			default:
-				mainScreen(game);
+
 			}
 		}
+		mainScreen(game);
 
 	}
 
@@ -187,36 +212,102 @@ public class GameUtil {
 
 	}
 
+	private static void endGame(Game game) {
+
+		Farm farm = game.getFarm();
+		int score = farm.getAccount();
+		for (Paddock paddock : farm.getPaddocks()) {
+			if (null != paddock.getCrop()) {
+				score = score + paddock.getCrop().getResidualValue();
+			}
+		}
+		for (Animal animal : farm.getAnimals()) {
+			score = score + animal.getResidualValue();
+		}
+		for (Item item : farm.getItems()) {
+			score = score + item.getResidualValue();
+		}
+		header(game);
+		System.out.println("Game over! Score: " + score);
+
+	}
+
+	private static void noActionAnimal(Game game) {
+		header(game);
+		System.out.println(
+				"You have no actions remaining for the day.\nMove on to the next day to refresh your actions!\n 1. Return to Animal list");
+		GameUtil.getInputNumber();
+		viewAnimals(game);
+	}
+
+	private static void noActionMaintenance(Game game) {
+		header(game);
+		System.out.println(
+				"You have no actions remaining for the day.\nMove on to the next day to refresh your actions!\n 1. Return to Farm maintenance");
+		GameUtil.getInputNumber();
+		farmMaintenance(game);
+	}
+
+	private static void noActionCrop(Game game) {
+		header(game);
+		System.out.println(
+				"You have no actions remaining for the day.\nMove on to the next day to refresh your actions!\n 1. Return to Crop list");
+		GameUtil.getInputNumber();
+		viewCrops(game);
+	}
+
+	private static boolean gotActions(Game game) {
+		return game.getActionCount() < game.getMaxDailyActions();
+
+	}
+
 	/**
 	 * 
 	 * @param game Used to track game instance progress
 	 */
 	public static void farmMaintenance(Game game) {
 		header(game);
-		System.out.println("1. *Clear land and erect fence (+1 paddock to your farm)");
+		Farm farm = game.getFarm();
+		int maxPaddocks = farm.getType().getMaxPaddocks();
+		int numPaddocks = farm.getPaddocks().size();
+		if (numPaddocks >= maxPaddocks) {
+			System.out.println("1. You have no more land to create paddocks");
+		} else {
+			System.out.println("1. *Clear land and erect fence (+1 paddock to your farm)");
+		}
+
 		System.out.println("2. *Repair barn (+3 happiness to a random animal)");
 		System.out.println("3. Return to main menu");
 		int selection = GameUtil.getInputNumber();
 
 		switch (selection) {
 		case 1:
-			// TODO implement maxPaddocks from farmType
-			// TODO implement daily action limit
-			Paddock paddock = new Paddock();
-			game.getFarm().addPaddock(paddock);
-			game.incrementActionCount();
-			mainScreen(game);
+			if (gotActions(game)) {
+				if (numPaddocks < maxPaddocks) {
+					Paddock paddock = new Paddock();
+					game.getFarm().addPaddock(paddock);
+					game.incrementActionCount();
+				}
+				mainScreen(game);
+			} else {
+				noActionMaintenance(game);
+			}
+
 			break;
 		case 2:
-			// TODO implement daily action limit
-			List<Animal> animals = game.getFarm().getAnimals();
-			if (animals.size() > 0) {
-				Random rand = new Random();
-				Animal animal = animals.get(rand.nextInt(animals.size()));
-				animal.setHappy(animal.getHappy() + 3);
-				game.incrementActionCount();
+			if (gotActions(game)) {
+				List<Animal> animals = game.getFarm().getAnimals();
+				if (animals.size() > 0) {
+					Random rand = new Random();
+					Animal animal = animals.get(rand.nextInt(animals.size()));
+					animal.setHappy(animal.getHappy() + 3);
+					game.incrementActionCount();
+				}
+				mainScreen(game);
+			} else {
+				noActionMaintenance(game);
 			}
-			mainScreen(game);
+
 			break;
 		default:
 			mainScreen(game);
@@ -324,7 +415,8 @@ public class GameUtil {
 				break;
 			case 6:
 				dayEnd(game);
-				continue;
+				looper = false;
+				break;
 			default:
 				continue;
 			}
@@ -367,13 +459,22 @@ public class GameUtil {
 
 		switch (selection) {
 		case 1:
-			// TODO implement daily action limit
-			animal.setHappy(animal.getHappy() + 2);
-			game.incrementActionCount();
-			viewAnimals(game);
+			if (gotActions(game)) {
+				animal.setHappy(animal.getHappy() + 2);
+				game.incrementActionCount();
+				viewAnimals(game);
+			} else {
+				noActionAnimal(game);
+			}
+
 			break;
 		case 2:
-			viewAnimalItems(animal, game);
+			if (gotActions(game)) {
+				viewAnimalItems(animal, game);
+			} else {
+				noActionAnimal(game);
+			}
+
 			break;
 		default:
 			viewAnimals(game);
@@ -387,7 +488,6 @@ public class GameUtil {
 	 * @param game   Used to track game instance progress
 	 */
 	public static void viewAnimalItems(Animal animal, Game game) {
-		// TODO implement daily action limit
 		header(game);
 		Farm farm = game.getFarm();
 		List<Item> items = farm.getItems();
@@ -417,10 +517,12 @@ public class GameUtil {
 		lineNumber = 1;
 
 		for (Item item : animalItems) {
+
 			if (selection == lineNumber) {
 				animal.setHealth(animal.getHealth() + item.getBonus());
 				farm.getItems().remove(item);
 				game.incrementActionCount();
+
 			}
 			lineNumber++;
 		}
@@ -470,7 +572,6 @@ public class GameUtil {
 	 * @param game    Used to track game instance progress
 	 */
 	public static void viewCropItems(Paddock paddock, Game game) {
-		// TODO implement daily action limit
 		header(game);
 		Farm farm = game.getFarm();
 		List<Item> items = farm.getItems();
@@ -538,7 +639,9 @@ public class GameUtil {
 			if (paddock.hasCrop()) {
 				Crop crop = paddock.getCrop();
 				int timeGrown = game.getCurrentDay() - crop.getDayPlanted();
-				int timeMature = crop.getDayPlanted() + crop.getMaturity() - game.getCurrentDay();
+				int timeMature = crop.getDayPlanted()
+						+ StoreUtil.calculateGrowth(crop.getMaturity(), farm.getType().getCropGrowthRate())
+						- game.getCurrentDay();
 				System.out
 						.println(lineNumber + ". Paddock " + paddock.getPaddockID() + " (" + crop.getType().getDisplay()
 								+ ", Days grown: " + timeGrown + ", Days to harvest: " + timeMature + ")");
@@ -621,20 +724,33 @@ public class GameUtil {
 
 			switch (selection) {
 			case 1:
-				// TODO implement daily action limit
-				crop.setMaturity(crop.getMaturity() - 1);
-				game.incrementActionCount();
-				viewCrops(game);
+				if (gotActions(game)) {
+					crop.setMaturity(crop.getMaturity() - 1);
+					game.incrementActionCount();
+					viewCrops(game);
+				} else {
+					noActionCrop(game);
+				}
+
 				break;
 			case 2:
-				viewCropItems(paddock, game);
+				if (gotActions(game)) {
+					viewCropItems(paddock, game);
+				} else {
+					noActionCrop(game);
+				}
 				break;
 			case 3:
-				if (paddock.getCrop().isMature(game)) {
-					game.getFarm().setAccount(game.getFarm().getAccount() + paddock.getCrop().getSalePrice());
-					paddock.setCrop(null);
+				if (gotActions(game)) {
+					if (paddock.getCrop().isMature(game)) {
+						game.getFarm().setAccount(game.getFarm().getAccount() + paddock.getCrop().getSalePrice());
+						paddock.setCrop(null);
+					}
+					viewPaddock(paddock, game);
+				} else {
+					noActionCrop(game);
 				}
-				viewPaddock(paddock, game);
+
 				break;
 			default:
 				viewCrops(game);

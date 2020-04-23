@@ -23,12 +23,12 @@ public class Store {
 		cropList.add(new Crop(CropType.PINE, 2, 12, 4, 6));
 		// (ItemType type, boolean crop, boolean animal, int price, int bonus, int
 		// residual)
-		itemList.add(new Item(ItemType.FERTILIZER, true, false, 5, 3, 5));
-		itemList.add(new Item(ItemType.SPRAY, true, false, 3, 2, 3));
-		itemList.add(new Item(ItemType.TRAINING, false, false, 10, 5, 0));
-		itemList.add(new Item(ItemType.FOOD, false, true, 1, 1, 1));
-		itemList.add(new Item(ItemType.VITAMINS, false, true, 2, 3, 1));
-		itemList.add(new Item(ItemType.WORMER, false, true, 3, 5, 2));
+		itemList.add(new Item(ItemType.FERTILIZER, true, false, false, 5, 3, 5));
+		itemList.add(new Item(ItemType.SPRAY, true, false, false, 3, 2, 3));
+		itemList.add(new Item(ItemType.TRAINING, false, false, true, 10, 5, 0));
+		itemList.add(new Item(ItemType.FOOD, false, true, false, 1, 1, 1));
+		itemList.add(new Item(ItemType.VITAMINS, false, true, false, 2, 3, 1));
+		itemList.add(new Item(ItemType.WORMER, false, true, false, 3, 5, 2));
 		// (AnimalType type, int happy, int health, int purchasePrice, int dailyIncome,
 		// int residual)
 		animalList.add(new Animal(AnimalType.CHICKEN, 1, 5, 10, 2, 10));
