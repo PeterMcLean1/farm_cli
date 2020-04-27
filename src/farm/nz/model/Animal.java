@@ -16,22 +16,6 @@ public class Animal extends StoreItem {
 		this.type = type;
 	}
 
-	public int getHappy() {
-		return happy;
-	}
-
-	public void setHappy(int happy) {
-		this.happy = happy;
-	}
-
-	public int getHealth() {
-		return health;
-	}
-
-	public void setHealth(int health) {
-		this.health = health;
-	}
-
 	public int getBaseIncome() {
 		return baseIncome;
 	}
@@ -42,12 +26,28 @@ public class Animal extends StoreItem {
 
 	}
 
-	public void setBaseIncome(int baseIncome) {
-		this.baseIncome = baseIncome;
+	public int getHappy() {
+		return happy;
+	}
+
+	public int getHealth() {
+		return health;
 	}
 
 	public AnimalType getType() {
 		return type;
+	}
+
+	public void setBaseIncome(int baseIncome) {
+		this.baseIncome = baseIncome;
+	}
+
+	public void setHappy(int happy) {
+		this.happy = happy;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
 	}
 
 	public void setType(AnimalType type) {

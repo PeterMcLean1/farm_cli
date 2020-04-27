@@ -11,7 +11,6 @@ import farm.nz.model.Farm;
 import farm.nz.model.Game;
 import farm.nz.model.Item;
 import farm.nz.model.Paddock;
-import farm.nz.type.FarmType;
 
 /**
  * Contains methods to print general game play options to console
@@ -154,7 +153,7 @@ public class GameUtil {
 					animals.remove(deleteAnimal);
 					List<Animal> animalList = new ArrayList<Animal>(animals);
 					for (Animal a : animalList) {
-						a.setHappy(a.getHappy() - 1);
+						a.setHappy(a.getHappy() - 2);
 						int animalChance = rnd.nextInt(100);
 						if (animalChance < 20) {
 							animals.remove(a);
@@ -383,7 +382,11 @@ public class GameUtil {
 		sb.append("3. View Supplies\n");
 		sb.append("4. Improve your Farm\n");
 		sb.append("5. Visit the General Store\n");
-		sb.append("6. Move to next day\n");
+		if (game.getCurrentDay() == game.getDaysToPlay()) {
+			sb.append("6. End Game\n");
+		} else {
+			sb.append("6. Move to next day\n");
+		}
 
 		boolean looper = true;
 
@@ -432,9 +435,9 @@ public class GameUtil {
 	public static void setupEnvironment(Game game) {
 		Farm farm = game.getFarm();
 		farm.setAccount(50);
-		farm.setType(FarmType.FLAT);
-		farm.setName("Peter Valley Farm");
-		game.setDaysToPlay(5);
+		// farm.setType(FarmType.FLAT);
+		// farm.setName("Peter Valley Farm");
+		// game.setDaysToPlay(5);
 		game.setMaxDailyActions(2);
 		farm.addPaddock(new Paddock());
 		farm.addPaddock(new Paddock());
@@ -502,7 +505,7 @@ public class GameUtil {
 			System.out.println("Select the item you wish to use:");
 		} else {
 			System.out.println("You have no farm supplies able to be used on animals.");
-			System.out.println("Hint: Crops can be purchased from the General Store.");
+			System.out.println("Hint: Farm supplies can be purchased from the General Store.");
 		}
 
 		int lineNumber = 1;
