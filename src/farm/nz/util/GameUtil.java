@@ -200,7 +200,7 @@ public class GameUtil {
 
 	}
 
-	private static void eventScreen(StringBuffer sb, Game game) {
+	public static void eventScreen(StringBuffer sb, Game game) {
 		header(game);
 		sb.append("\n1. Return to main menu");
 
@@ -211,7 +211,7 @@ public class GameUtil {
 
 	}
 
-	private static void endGame(Game game) {
+	public static void endGame(Game game) {
 
 		Farm farm = game.getFarm();
 		int score = farm.getAccount();
@@ -441,6 +441,16 @@ public class GameUtil {
 		game.setMaxDailyActions(2);
 		farm.addPaddock(new Paddock());
 		farm.addPaddock(new Paddock());
+	}
+
+	public static void startInfo(Game game) {
+		StringBuffer sb = new StringBuffer();
+		// TODO write game instructions
+
+		sb.append("\n1. Return to main menu");
+
+		System.out.println(sb);
+		GameUtil.getInputNumber(); // accept any input
 	}
 
 	/**

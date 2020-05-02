@@ -25,6 +25,7 @@ public class FarmApplication {
 		SetupUtil.setFarmName(farm); // [2.3]
 
 		GameUtil.setupEnvironment(game);
+		GameUtil.startInfo(game);
 		GameUtil.mainScreen(game);
 	}
 
