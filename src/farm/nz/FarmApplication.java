@@ -3,8 +3,8 @@ package farm.nz;
 import farm.nz.model.Farm;
 import farm.nz.model.Farmer;
 import farm.nz.model.Game;
-import farm.nz.util.GameUtil;
-import farm.nz.util.SetupUtil;
+import farm.nz.service.GameService;
+import farm.nz.service.SetupService;
 
 public class FarmApplication {
 
@@ -14,19 +14,19 @@ public class FarmApplication {
 		Game game = new Game(farm);
 
 		// set game length [2.1]
-		SetupUtil.setGameDays(game);
+		SetupService.setGameDays(game);
 
 		// create farmer (player) [2.2.1]
-		SetupUtil.setName(farmer);
-		SetupUtil.setAge(farmer);
+		SetupService.setName(farmer);
+		SetupService.setAge(farmer);
 
 		// create farm
-		SetupUtil.setFarmType(farm); // [2.2.2 ab]
-		SetupUtil.setFarmName(farm); // [2.3]
+		SetupService.setFarmType(farm); // [2.2.2 ab]
+		SetupService.setFarmName(farm); // [2.3]
 
-		GameUtil.setupEnvironment(game);
-		GameUtil.startInfo(game);
-		GameUtil.mainScreen(game);
+		GameService.setupEnvironment(game);
+		GameService.startInfo(game);
+		GameService.mainScreen(game);
 	}
 
 }

@@ -2,11 +2,15 @@ package farm.nz.model;
 
 public class Game {
 
-	private int daysToPlay;
-	private int currentDay = 1;
 	private int actionCount = 0;
-	private int maxDailyActions = 2;
+	private int currentDay = 1;
+	private int daysToPlay;
 	private Farm farm;
+	private int maxDailyActions = 2;
+
+	public Game() {
+
+	}
 
 	public Game(Farm farm) {
 		this.farm = farm;
@@ -41,12 +45,12 @@ public class Game {
 		return actionCount < maxDailyActions;
 	}
 
-	public void incrementCurrentDay() {
-		this.currentDay++;
-	}
-
 	public void incrementActionCount() {
 		this.actionCount++;
+	}
+
+	public void incrementCurrentDay() {
+		this.currentDay++;
 	}
 
 	public void setActionCount(int actionCount) {

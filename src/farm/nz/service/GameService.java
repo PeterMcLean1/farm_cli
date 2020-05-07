@@ -1,4 +1,4 @@
-package farm.nz.util;
+package farm.nz.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import farm.nz.model.Paddock;
  * @author peter.mclean
  *
  */
-public class GameUtil {
+public class GameService {
 
 	static Scanner keyboard = new Scanner(System.in);
 
@@ -205,7 +205,7 @@ public class GameUtil {
 		sb.append("\n1. Return to main menu");
 
 		System.out.println(sb);
-		GameUtil.getInputNumber(); // accept any input
+		GameService.getInputNumber(); // accept any input
 
 		mainScreen(game);
 
@@ -235,7 +235,7 @@ public class GameUtil {
 		header(game);
 		System.out.println(
 				"You have no actions remaining for the day.\nMove on to the next day to refresh your actions!\n 1. Return to Animal list");
-		GameUtil.getInputNumber();
+		GameService.getInputNumber();
 		viewAnimals(game);
 	}
 
@@ -243,7 +243,7 @@ public class GameUtil {
 		header(game);
 		System.out.println(
 				"You have no actions remaining for the day.\nMove on to the next day to refresh your actions!\n 1. Return to Farm maintenance");
-		GameUtil.getInputNumber();
+		GameService.getInputNumber();
 		farmMaintenance(game);
 	}
 
@@ -251,7 +251,7 @@ public class GameUtil {
 		header(game);
 		System.out.println(
 				"You have no actions remaining for the day.\nMove on to the next day to refresh your actions!\n 1. Return to Crop list");
-		GameUtil.getInputNumber();
+		GameService.getInputNumber();
 		viewCrops(game);
 	}
 
@@ -277,7 +277,7 @@ public class GameUtil {
 
 		System.out.println("2. *Repair barn (+3 happiness to a random animal)");
 		System.out.println("3. Return to main menu");
-		int selection = GameUtil.getInputNumber();
+		int selection = GameService.getInputNumber();
 
 		switch (selection) {
 		case 1:
@@ -393,7 +393,7 @@ public class GameUtil {
 		while (looper) {
 			header(game);
 			System.out.println(sb.toString());
-			int selection = GameUtil.getInputNumber();
+			int selection = GameService.getInputNumber();
 
 			switch (selection) {
 			case 1:
@@ -413,7 +413,7 @@ public class GameUtil {
 				looper = false;
 				break;
 			case 5:
-				StoreUtil.mainStore(game);
+				StoreService.mainStore(game);
 				looper = false;
 				break;
 			case 6:
@@ -445,12 +445,19 @@ public class GameUtil {
 
 	public static void startInfo(Game game) {
 		StringBuffer sb = new StringBuffer();
-		// TODO write game instructions
+		sb.append("Once the adventure has been started, the main game can begin. The farmer\r\n"
+				+ "starts out on their brand new farm with a set amount of money, ready to fill\r\n"
+				+ "with crops and animals that can be purchased from the general store. There will be"
+				+ " a series of options displayed to the player.\r\n"
+				+ "Some of these options constitute an “action” and will be marked with a '*'. The farmer may only perform\r\n"
+				+ "a maximum of two actions per day. Furthermore, the farmer is able to\r\n"
+				+ "perform other activities at any time (which do not count towards the farmer’s two daily\r\n"
+				+ "actions). The aim of the game is to make as much money as possible in the allowed time.");
 
-		sb.append("\n1. Return to main menu");
+		sb.append("\n1. Go to main menu");
 
 		System.out.println(sb);
-		GameUtil.getInputNumber(); // accept any input
+		GameService.getInputNumber(); // accept any input
 	}
 
 	/**
@@ -468,7 +475,7 @@ public class GameUtil {
 		System.out.println("2. *Use item on animal (+item-bonus health)");
 		System.out.println("3. Return to Animal list");
 
-		int selection = GameUtil.getInputNumber();
+		int selection = GameService.getInputNumber();
 
 		switch (selection) {
 		case 1:
@@ -526,7 +533,7 @@ public class GameUtil {
 			lineNumber++;
 		}
 		System.out.println(lineNumber + ". Return to animal list");
-		int selection = GameUtil.getInputNumber();
+		int selection = GameService.getInputNumber();
 		lineNumber = 1;
 
 		for (Item item : animalItems) {
@@ -565,7 +572,7 @@ public class GameUtil {
 			lineNumber++;
 		}
 		System.out.println(lineNumber + ". Return to main menu");
-		int selection = GameUtil.getInputNumber();
+		int selection = GameService.getInputNumber();
 
 		lineNumber = 1;
 
@@ -609,7 +616,7 @@ public class GameUtil {
 		}
 
 		System.out.println(lineNumber + ". Return to crop list");
-		int selection = GameUtil.getInputNumber();
+		int selection = GameService.getInputNumber();
 
 		lineNumber = 1;
 
@@ -653,7 +660,7 @@ public class GameUtil {
 				Crop crop = paddock.getCrop();
 				int timeGrown = game.getCurrentDay() - crop.getDayPlanted();
 				int timeMature = crop.getDayPlanted()
-						+ StoreUtil.calculateGrowth(crop.getMaturity(), farm.getType().getCropGrowthRate())
+						+ StoreService.calculateGrowth(crop.getMaturity(), farm.getType().getCropGrowthRate())
 						- game.getCurrentDay();
 				System.out
 						.println(lineNumber + ". Paddock " + paddock.getPaddockID() + " (" + crop.getType().getDisplay()
@@ -665,7 +672,7 @@ public class GameUtil {
 			lineNumber++;
 		}
 		System.out.println(lineNumber + ". Return to main menu");
-		int selection = GameUtil.getInputNumber();
+		int selection = GameService.getInputNumber();
 
 		lineNumber = 1;
 
@@ -701,7 +708,7 @@ public class GameUtil {
 		}
 
 		System.out.println(lineNumber + ". Return to main menu");
-		GameUtil.getInputNumber(); // accept any input
+		GameService.getInputNumber(); // accept any input
 		mainScreen(game);
 
 	}
@@ -733,7 +740,7 @@ public class GameUtil {
 
 			System.out.println("4. Return to crop list");
 
-			int selection = GameUtil.getInputNumber();
+			int selection = GameService.getInputNumber();
 
 			switch (selection) {
 			case 1:

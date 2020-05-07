@@ -8,9 +8,9 @@ import farm.nz.type.CropType;
 import farm.nz.type.ItemType;
 
 public class Store {
+	private List<Animal> animalList = new ArrayList<Animal>();
 	private List<Crop> cropList = new ArrayList<Crop>();
 	private List<Item> itemList = new ArrayList<Item>();
-	private List<Animal> animalList = new ArrayList<Animal>();
 
 	public Store() {
 		// (CropType type, int purchasePrice, int salePrice, int maturity, int residual)
@@ -37,28 +37,28 @@ public class Store {
 
 	}
 
-	public List<Crop> getCropList() {
-		return cropList;
+	public List<Animal> getAnimalList() {
+		return animalList;
 	}
 
-	public void setCropList(List<Crop> cropList) {
-		this.cropList = cropList;
+	public List<Crop> getCropList() {
+		return cropList;
 	}
 
 	public List<Item> getItemList() {
 		return itemList;
 	}
 
-	public void setItemList(List<Item> itemList) {
-		this.itemList = itemList;
-	}
-
-	public List<Animal> getAnimalList() {
-		return animalList;
-	}
-
 	public void setAnimalList(List<Animal> animalList) {
 		this.animalList = animalList;
+	}
+
+	public void setCropList(List<Crop> cropList) {
+		this.cropList = cropList;
+	}
+
+	public void setItemList(List<Item> itemList) {
+		this.itemList = itemList;
 	}
 
 }

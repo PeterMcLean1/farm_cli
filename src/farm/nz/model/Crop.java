@@ -3,11 +3,15 @@ package farm.nz.model;
 import farm.nz.type.CropType;
 
 public class Crop extends StoreItem {
-	private CropType type;
-	private int salePrice;
-	private int maturity;// days from planting to harvest
 	private int dayPlanted;// day planted
+	private int maturity;// days from planting to harvest
 	private Paddock paddock;
+	private int salePrice;
+	private CropType type;
+
+	public Crop() {
+
+	}
 
 	public Crop(CropType type, int price, int salePrice, int maturity, int residual) {
 		super(price, residual);
@@ -16,49 +20,49 @@ public class Crop extends StoreItem {
 		this.maturity = maturity;
 	}
 
-	public boolean isMature(Game game) {
-		return ((dayPlanted + maturity) <= game.getCurrentDay());
-
-	}
-
-	public CropType getType() {
-		return type;
-	}
-
-	public void setType(CropType type) {
-		this.type = type;
-	}
-
-	public int getSalePrice() {
-		return salePrice;
-	}
-
-	public void setSalePrice(int salePrice) {
-		this.salePrice = salePrice;
+	public int getDayPlanted() {
+		return dayPlanted;
 	}
 
 	public int getMaturity() {
 		return maturity;
 	}
 
-	public void setMaturity(int maturity) {
-		this.maturity = maturity;
-	}
-
 	public Paddock getPaddock() {
 		return paddock;
 	}
 
-	public int getDayPlanted() {
-		return dayPlanted;
+	public int getSalePrice() {
+		return salePrice;
+	}
+
+	public CropType getType() {
+		return type;
+	}
+
+	public boolean isMature(Game game) {
+		return ((dayPlanted + maturity) <= game.getCurrentDay());
+
 	}
 
 	public void setDayPlanted(int dayPlanted) {
 		this.dayPlanted = dayPlanted;
 	}
 
+	public void setMaturity(int maturity) {
+		this.maturity = maturity;
+	}
+
 	public void setPaddock(Paddock paddock) {
 		this.paddock = paddock;
+	}
+
+	public void setSalePrice(int salePrice) {
+		this.salePrice = salePrice;
+	}
+
+	public void setType(CropType type) {
+		this.type = type;
 	}
 
 }

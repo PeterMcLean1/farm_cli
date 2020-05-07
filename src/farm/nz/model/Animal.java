@@ -3,10 +3,14 @@ package farm.nz.model;
 import farm.nz.type.AnimalType;
 
 public class Animal extends StoreItem {
+	private int baseIncome; // income produced daily from animal
 	private int happy; // affect daily income
 	private int health; // affect daily income
-	private int baseIncome; // income produced daily from animal
 	private AnimalType type;
+
+	public Animal() {
+
+	}
 
 	public Animal(AnimalType type, int happy, int health, int price, int baseIncome, int residual) {
 		super(price, residual);

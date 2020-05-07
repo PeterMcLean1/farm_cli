@@ -19,12 +19,12 @@ public class StoreItem {
 		return purchasePrice;
 	}
 
-	public void setPurchasePrice(int purchasePrice) {
-		this.purchasePrice = purchasePrice;
-	}
-
 	public int getResidualValue() {
 		return residualValue;
+	}
+
+	public void setPurchasePrice(int purchasePrice) {
+		this.purchasePrice = purchasePrice;
 	}
 
 	public void setResidualValue(int residual) {

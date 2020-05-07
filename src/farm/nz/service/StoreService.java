@@ -1,4 +1,4 @@
-package farm.nz.util;
+package farm.nz.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import farm.nz.model.Store;
  * @author peter.mclean
  *
  */
-public class StoreUtil {
+public class StoreService {
 
 	static Scanner keyboard = new Scanner(System.in);
 
@@ -28,7 +28,7 @@ public class StoreUtil {
 	 * @param game Used to track game instance progress
 	 */
 	public static void buyAnimals(Game game) {
-		GameUtil.header(game);
+		GameService.header(game);
 		Farm farm = game.getFarm();
 		System.out.println("Please select the Animal to purchase?");
 		Store store = new Store();
@@ -42,7 +42,7 @@ public class StoreUtil {
 		}
 
 		System.out.println(lineNumber + ". General Store Menu");
-		int selection = GameUtil.getInputNumber();
+		int selection = GameService.getInputNumber();
 		lineNumber = 1;
 
 		for (Animal animal : animals) {
@@ -71,7 +71,7 @@ public class StoreUtil {
 	 * @param game Used to track game instance progress
 	 */
 	public static void buyCrops(Game game) {
-		GameUtil.header(game);
+		GameService.header(game);
 		Farm farm = game.getFarm();
 		double growthRate = farm.getType().getCropGrowthRate();
 		List<Paddock> paddocks = farm.getPaddocks();
@@ -115,7 +115,7 @@ public class StoreUtil {
 
 		System.out.println(sb.toString());
 
-		int selection = GameUtil.getInputNumber();
+		int selection = GameService.getInputNumber();
 
 		if (emptyPaddocks.size() == 0) {
 			mainStore(game);
@@ -146,7 +146,7 @@ public class StoreUtil {
 	 * @param game Used to track game instance progress
 	 */
 	public static void buySupplies(Game game) {
-		GameUtil.header(game);
+		GameService.header(game);
 		Farm farm = game.getFarm();
 		Store store = new Store();
 		List<Item> items = store.getItemList();
@@ -170,7 +170,7 @@ public class StoreUtil {
 		sb.append(". Return to the General Store menu");
 		System.out.println(sb.toString());
 
-		int selection = GameUtil.getInputNumber();
+		int selection = GameService.getInputNumber();
 
 		lineNumber = 1;
 
@@ -195,7 +195,7 @@ public class StoreUtil {
 	 */
 	public static void mainStore(Game game) {
 		StringBuffer sb = new StringBuffer();
-		GameUtil.header(game);
+		GameService.header(game);
 		sb.append("Welcome to the General Store!\n");
 		sb.append("What would you like to do next? (1-4):\n\n");
 		sb.append("1. Buy and plant Crops\n");
@@ -204,7 +204,7 @@ public class StoreUtil {
 		sb.append("4. Exit General Store\n");
 
 		System.out.println(sb.toString());
-		int selection = GameUtil.getInputNumber();
+		int selection = GameService.getInputNumber();
 
 		switch (selection) {
 		case 1:
@@ -217,7 +217,7 @@ public class StoreUtil {
 			buySupplies(game);
 			break;
 		default:
-			GameUtil.mainScreen(game);
+			GameService.mainScreen(game);
 		}
 	}
 

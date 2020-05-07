@@ -1,4 +1,4 @@
-package farm.nz.util;
+package farm.nz.service;
 
 import java.util.Scanner;
 
@@ -13,7 +13,7 @@ import farm.nz.type.FarmType;
  * @author peter.mclean
  *
  */
-public class SetupUtil {
+public class SetupService {
 	static Scanner keyboard = new Scanner(System.in);
 
 	/**
@@ -24,9 +24,9 @@ public class SetupUtil {
 	public static void setAge(Farmer farmer) {
 		boolean looper = true;
 		while (looper) {
-			GameUtil.clearScreen();
+			GameService.clearScreen();
 			System.out.println("Please enter your age (1-100):");
-			int age = GameUtil.getInputNumber();
+			int age = GameService.getInputNumber();
 			if (100 < age || 1 > age) {
 				continue;
 			}
@@ -43,7 +43,7 @@ public class SetupUtil {
 	public static void setFarmName(Farm farm) {
 		boolean looper = true;
 		while (looper) {
-			GameUtil.clearScreen();
+			GameService.clearScreen();
 			System.out.println("Your farm name must be less than 25 characters");
 			System.out.println("Please enter a name for your farm:");
 			String name = keyboard.next();
@@ -69,9 +69,9 @@ public class SetupUtil {
 		boolean looper = true;
 
 		while (looper) {
-			GameUtil.clearScreen();
+			GameService.clearScreen();
 			System.out.println(sb.toString());
-			int selection = GameUtil.getInputNumber();
+			int selection = GameService.getInputNumber();
 
 			switch (selection) {
 			case 1:
@@ -109,9 +109,9 @@ public class SetupUtil {
 		int days = 0;
 
 		while (looper) {
-			GameUtil.clearScreen();
+			GameService.clearScreen();
 			System.out.println("Please enter the number of days you want to play (5-10):");
-			days = GameUtil.getInputNumber();
+			days = GameService.getInputNumber();
 			if (days < 5 || days > 10) {
 				continue;
 			}
@@ -130,7 +130,7 @@ public class SetupUtil {
 		boolean looper = true;
 		System.out.println("Welcome farmer!");
 		while (looper) {
-			GameUtil.clearScreen();
+			GameService.clearScreen();
 			System.out.println("Your name must be 3-15 characters, and contain no special characters");
 			System.out.println("Please enter a name for your farmer:");
 			String name = keyboard.next();
