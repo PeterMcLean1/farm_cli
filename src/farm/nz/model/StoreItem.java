@@ -1,6 +1,6 @@
 package farm.nz.model;
 
-public class StoreItem {
+public abstract class StoreItem {
 
 	private int purchasePrice;
 	private int residualValue;

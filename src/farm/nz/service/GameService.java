@@ -48,7 +48,7 @@ public class GameService {
 
 		}
 
-		farm.setAccount(farm.getAccount() + bonus);
+		game.setAccount(game.getAccount() + bonus);
 
 		if (game.getCurrentDay() == game.getDaysToPlay()) {
 			endGame(game);
@@ -184,7 +184,7 @@ public class GameService {
 					}
 				}
 				winnings = winnings + 5 * numberCrops;
-				farm.setAccount(farm.getAccount() + winnings);
+				game.setAccount(game.getAccount() + winnings);
 
 				sb.append("!!! COUNTY FAIR AWARDS !!!\n\n");
 				sb.append("Your farm has won the top award at the annual county fair.\n");
@@ -214,7 +214,7 @@ public class GameService {
 	public static void endGame(Game game) {
 
 		Farm farm = game.getFarm();
-		int score = farm.getAccount();
+		int score = game.getAccount();
 		for (Paddock paddock : farm.getPaddocks()) {
 			if (null != paddock.getCrop()) {
 				score = score + paddock.getCrop().getResidualValue();
@@ -255,11 +255,6 @@ public class GameService {
 		viewCrops(game);
 	}
 
-	private static boolean gotActions(Game game) {
-		return game.getActionCount() < game.getMaxDailyActions();
-
-	}
-
 	/**
 	 * 
 	 * @param game Used to track game instance progress
@@ -281,7 +276,7 @@ public class GameService {
 
 		switch (selection) {
 		case 1:
-			if (gotActions(game)) {
+			if (game.hasActions()) {
 				if (numPaddocks < maxPaddocks) {
 					Paddock paddock = new Paddock();
 					game.getFarm().addPaddock(paddock);
@@ -294,7 +289,7 @@ public class GameService {
 
 			break;
 		case 2:
-			if (gotActions(game)) {
+			if (game.hasActions()) {
 				List<Animal> animals = game.getFarm().getAnimals();
 				if (animals.size() > 0) {
 					Random rand = new Random();
@@ -353,7 +348,7 @@ public class GameService {
 		sb2.append("| ");
 		sb2.append(sb1);
 		sb2.append("   Account: $");
-		sb2.append(farm.getAccount());
+		sb2.append(game.getAccount());
 		sb2.append(" |\n");
 		sb2.append("---------------------------------------------\n");
 		sb2.append("| Day: ");
@@ -434,7 +429,7 @@ public class GameService {
 	 */
 	public static void setupEnvironment(Game game) {
 		Farm farm = game.getFarm();
-		farm.setAccount(50);
+		game.setAccount(50);
 		// farm.setType(FarmType.FLAT);
 		// farm.setName("Peter Valley Farm");
 		// game.setDaysToPlay(5);
@@ -479,7 +474,7 @@ public class GameService {
 
 		switch (selection) {
 		case 1:
-			if (gotActions(game)) {
+			if (game.hasActions()) {
 				animal.setHappy(animal.getHappy() + 2);
 				game.incrementActionCount();
 				viewAnimals(game);
@@ -489,7 +484,7 @@ public class GameService {
 
 			break;
 		case 2:
-			if (gotActions(game)) {
+			if (game.hasActions()) {
 				viewAnimalItems(animal, game);
 			} else {
 				noActionAnimal(game);
@@ -744,7 +739,7 @@ public class GameService {
 
 			switch (selection) {
 			case 1:
-				if (gotActions(game)) {
+				if (game.hasActions()) {
 					crop.setMaturity(crop.getMaturity() - 1);
 					game.incrementActionCount();
 					viewCrops(game);
@@ -754,16 +749,16 @@ public class GameService {
 
 				break;
 			case 2:
-				if (gotActions(game)) {
+				if (game.hasActions()) {
 					viewCropItems(paddock, game);
 				} else {
 					noActionCrop(game);
 				}
 				break;
 			case 3:
-				if (gotActions(game)) {
+				if (game.hasActions()) {
 					if (paddock.getCrop().isMature(game)) {
-						game.getFarm().setAccount(game.getFarm().getAccount() + paddock.getCrop().getSalePrice());
+						game.setAccount(game.getAccount() + paddock.getCrop().getSalePrice());
 						paddock.setCrop(null);
 					}
 					viewPaddock(paddock, game);

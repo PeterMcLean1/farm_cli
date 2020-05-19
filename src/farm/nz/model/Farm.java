@@ -6,7 +6,6 @@ import java.util.List;
 import farm.nz.type.FarmType;
 
 public class Farm {
-	private int account;
 	private List<Animal> animals = new ArrayList<Animal>();
 	private Farmer farmer;
 	private List<Item> items = new ArrayList<Item>();
@@ -34,10 +33,6 @@ public class Farm {
 
 	public void addPaddock(Paddock paddock) {
 		this.paddocks.add(paddock);
-	}
-
-	public int getAccount() {
-		return account;
 	}
 
 	public List<Animal> getAnimals() {
@@ -84,10 +79,6 @@ public class Farm {
 		if (paddocks.contains(paddock)) {
 			paddocks.remove(paddock);
 		}
-	}
-
-	public void setAccount(int account) {
-		this.account = account;
 	}
 
 	public void setAnimals(List<Animal> animals) {

@@ -2,7 +2,7 @@ package farm.nz.model;
 
 import farm.nz.type.AnimalType;
 
-public class Animal extends StoreItem {
+public class Animal extends StoreItem implements Cloneable {
 	private int baseIncome; // income produced daily from animal
 	private int happy; // affect daily income
 	private int health; // affect daily income
@@ -56,6 +56,10 @@ public class Animal extends StoreItem {
 
 	public void setType(AnimalType type) {
 		this.type = type;
+	}
+
+	protected Object clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 
 }

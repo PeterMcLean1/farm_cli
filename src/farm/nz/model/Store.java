@@ -25,7 +25,6 @@ public class Store {
 		// residual)
 		itemList.add(new Item(ItemType.FERTILIZER, true, false, false, 5, 3, 5));
 		itemList.add(new Item(ItemType.SPRAY, true, false, false, 3, 2, 3));
-		itemList.add(new Item(ItemType.TRAINING, false, false, true, 10, 5, 0));
 		itemList.add(new Item(ItemType.FOOD, false, true, false, 1, 1, 1));
 		itemList.add(new Item(ItemType.VITAMINS, false, true, false, 2, 3, 1));
 		itemList.add(new Item(ItemType.WORMER, false, true, false, 3, 5, 2));

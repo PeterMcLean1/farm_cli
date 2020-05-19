@@ -2,6 +2,7 @@ package farm.nz.model;
 
 public class Game {
 
+	private int account;
 	private int actionCount = 0;
 	private int currentDay = 1;
 	private int daysToPlay;
@@ -14,6 +15,10 @@ public class Game {
 
 	public Game(Farm farm) {
 		this.farm = farm;
+	}
+
+	public int getAccount() {
+		return account;
 	}
 
 	public int getActionCount() {
@@ -51,6 +56,10 @@ public class Game {
 
 	public void incrementCurrentDay() {
 		this.currentDay++;
+	}
+
+	public void setAccount(int account) {
+		this.account = account;
 	}
 
 	public void setActionCount(int actionCount) {

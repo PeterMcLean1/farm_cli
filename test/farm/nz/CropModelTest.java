@@ -8,7 +8,7 @@ import farm.nz.model.Crop;
 import farm.nz.type.CropType;
 
 public class CropModelTest {
-	
+
 	@Test
 	void cropContructorTest() {
 
@@ -20,12 +20,11 @@ public class CropModelTest {
 		assertTrue(crop.getResidualValue() == 6);
 
 	}
-	
+
 	@Test
 	void cropSetGetTest() {
 
 		Crop crop = new Crop();
-
 		crop.setType(CropType.BARLEY);
 		crop.setPurchasePrice(4);
 		crop.setDayPlanted(3);
